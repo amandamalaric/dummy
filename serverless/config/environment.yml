@@ -1,0 +1,5 @@
+STAGE: ${self:provider.stage}
+REGION: ${self:provider.region}
+ACCOUNT_ID: { Ref: "AWS::AccountId" }
+SANITIZE_LOGS: "true"
+LOG_LEVEL: ${self:custom.logLevel}

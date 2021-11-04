@@ -1,0 +1,3 @@
+dummyLambda:
+  handler: handler.dummy
+  memorySize: 256

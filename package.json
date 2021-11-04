@@ -1,0 +1,10 @@
+{
+  "name": "test",
+  "version": "0.0.0",
+  "license": "Client shall have an irrevocable, royalty-free and perpetual license to use for the purpose for which it is made available to Client in accordance with the Services and the applicable SOW any of OST’s Pre-Existing IP and Independently Developed IP that is incorporated into any material, work product, document, data or other deliverable developed or provided by OST in connection with any Services provided to Client (“Deliverables”).  Client may not (a) reproduce or use Preexisting IP or Independently Developed IP other than as components of the Deliverables, (b) distribute Preexisting IP or Independently Developed IP, or sublicense any rights in Preexisting IP or Independently Developed IP to third parties other than in support of Client’s internal business operations.",
+  "private": true,
+  "devDependencies": {
+    "serverless-webpack": "^5.5.1",
+    "webpack": "=5.49.0"
+  }
+}
