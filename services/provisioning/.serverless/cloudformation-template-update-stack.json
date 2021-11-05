@@ -2,10 +2,10 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "The AWS CloudFormation template for this Serverless application",
   "Resources": {
-    "TestFleetLogGroup": {
+    "ProvisionByClaimPreProvisionerLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/test-cp-testFleet",
+        "LogGroupName": "/aws/lambda/provisioning-cp-ProvisionByClaimPreProvisioner",
         "RetentionInDays": 3
       }
     },
@@ -34,7 +34,7 @@
               "Fn::Join": [
                 "-",
                 [
-                  "test",
+                  "provisioning",
                   "cp",
                   "lambda"
                 ]
@@ -51,7 +51,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/test-cp*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/provisioning-cp*:*"
                     }
                   ]
                 },
@@ -62,7 +62,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/test-cp*:*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/provisioning-cp*:*:*"
                     }
                   ]
                 }
@@ -75,7 +75,7 @@
           "Fn::Join": [
             "-",
             [
-              "test",
+              "provisioning",
               "cp",
               {
                 "Ref": "AWS::Region"
@@ -86,17 +86,17 @@
         }
       }
     },
-    "TestFleetLambdaFunction": {
+    "ProvisionByClaimPreProvisionerLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": "amanda-test-bucket",
-          "S3Key": "serverless/test/cp/1636050730076-2021-11-04T18:32:10.076Z/test.zip"
+          "S3Key": "serverless/provisioning/cp/1636121469703-2021-11-05T14:11:09.703Z/provisioning.zip"
         },
-        "Handler": "handler.dummy",
-        "Runtime": "nodejs14.x",
-        "FunctionName": "test-cp-testFleet",
-        "MemorySize": 256,
+        "Handler": "handler.lambda_handler",
+        "Runtime": "python3.8",
+        "FunctionName": "provisioning-cp-ProvisionByClaimPreProvisioner",
+        "MemorySize": 512,
         "Timeout": 6,
         "Environment": {
           "Variables": {
@@ -117,7 +117,7 @@
         }
       },
       "DependsOn": [
-        "TestFleetLogGroup"
+        "ProvisionByClaimPreProvisionerLogGroup"
       ]
     }
   },
@@ -125,7 +125,7 @@
     "ServerlessDeploymentBucketName": {
       "Value": "amanda-test-bucket",
       "Export": {
-        "Name": "sls-test-cp-ServerlessDeploymentBucketName"
+        "Name": "sls-provisioning-cp-ServerlessDeploymentBucketName"
       }
     }
   }

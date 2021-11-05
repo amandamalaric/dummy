@@ -1,0 +1,18 @@
+service: provisioning
+provider:
+  name: aws
+  runtime: python3.8
+  memorySize: 512
+  stage: ${opt:stage}
+  region: ${opt:region}
+  tracing:
+    lambda: false
+  versionFunctions: false
+  logRetentionInDays: ${self:custom.logRetention}
+  deploymentBucket:
+    name: amanda-test-bucket
+  environment: ${file(../../serverless/config/environment.yml)}
+custom: ${file(../../serverless/config/custom_${self:provider.stage}.yml)}
+functions:
+  ProvisionByClaimPreProvisioner:
+    handler: handler.lambda_handler

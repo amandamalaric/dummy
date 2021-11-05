@@ -1,0 +1,18 @@
+service: usersCrud
+provider: aws
+functions:
+resources: # CloudFormation template syntax from here on.
+  Resources:
+    ProvisioningResourcesServerless:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ProvisioningResourcesServerless
+        AttributeDefinitions:
+          - AttributeName: MacAddress
+            AttributeType: S
+        KeySchema:
+          - AttributeName: MacAddress
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

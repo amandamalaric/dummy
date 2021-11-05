@@ -8,7 +8,7 @@
  * @returns {object} List of things
  */
 function dummy( event, context, callback ) {
-    console.log( 'get called with', event );
+    console.log( 'hello world', event );
 }
 
 module.exports.dummy = dummy;
