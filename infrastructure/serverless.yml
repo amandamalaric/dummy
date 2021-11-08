@@ -1,0 +1,15 @@
+service: test-infra
+configValidationMode: error
+variablesResolutionMode: 20210326
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage}
+  region: ${opt:region}
+  deploymentBucket:
+    name: amanda-test-bucket
+  environment: ${file(serverless/config/environment.yml)}
+custom: ${file(serverless/config/custom_${self:provider.stage}.yml)}
+resources:
+  - Resources:
+      ${file(serverless/resources/tables.yml)}

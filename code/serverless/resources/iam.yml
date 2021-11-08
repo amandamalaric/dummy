@@ -1,0 +1,12 @@
+ioTProvisionByClaimRole:
+  Type: AWS::IAM::Role
+  Properties:
+    RoleName: IoTProvisionByClaimRole-TEST
+    AssumeRolePolicyDocument:
+      Statement:
+        - Effect: Allow
+          Principal:
+            Service: iot.amazonaws.com
+          Action: 'sts:AssumeRole'
+    ManagedPolicyArns:
+      - 'arn:aws:iam::aws:policy/service-role/AWSIoTThingsRegistration'

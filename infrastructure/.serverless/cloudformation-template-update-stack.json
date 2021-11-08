@@ -1,0 +1,40 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "ProvisioningResourcesServerless": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "ProvisioningResources-sls",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "MacAddress",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "Sku",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "MacAddress",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 1,
+          "WriteCapacityUnits": 1
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": "amanda-test-bucket",
+      "Export": {
+        "Name": "sls-test-infra-cp-ServerlessDeploymentBucketName"
+      }
+    }
+  }
+}

@@ -1,6 +1,0 @@
-testFleet:
-    handler: handler.dummy
-    events:
-      - iotFleetProvisioning:
-          templateBody: ${file(template.json)}
-          provisioningRoleArn: arn:aws:iam::12345678910:role/provisioning-role

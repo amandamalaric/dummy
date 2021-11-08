@@ -1,0 +1,135 @@
+{
+  "service": {
+    "service": "test-infra",
+    "serviceObject": {
+      "name": "test-infra"
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs14.x",
+      "stage": "cp",
+      "region": "us-east-1",
+      "deploymentBucket": "amanda-test-bucket",
+      "environment": {
+        "STAGE": "cp",
+        "REGION": "us-east-1",
+        "SIMULATIONS_TABLE": "simulations_cp",
+        "SIMULATIONS_TABLE_USER_ID_INDEX": "simulations_user_id_index_cp",
+        "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+      },
+      "versionFunctions": true,
+      "deploymentBucketObject": {
+        "name": "amanda-test-bucket"
+      },
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "ProvisioningResourcesServerless": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "ProvisioningResources-sls",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "MacAddress",
+                  "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "Sku",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "MacAddress",
+                  "KeyType": "HASH"
+                }
+              ],
+              "ProvisionedThroughput": {
+                "ReadCapacityUnits": 1,
+                "WriteCapacityUnits": 1
+              }
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "amanda-test-bucket",
+            "Export": {
+              "Name": "sls-test-infra-cp-ServerlessDeploymentBucketName"
+            }
+          }
+        }
+      }
+    },
+    "custom": {
+      "webpack": {
+        "packager": "yarn",
+        "includeModules": {
+          "forceExclude": [
+            "aws-sdk"
+          ]
+        }
+      },
+      "logLevel": "TRACE",
+      "logRetention": 3
+    },
+    "pluginsData": {},
+    "functions": {},
+    "resources": {
+      "Resources": {
+        "ProvisioningResourcesServerless": {
+          "Type": "AWS::DynamoDB::Table",
+          "Properties": {
+            "TableName": "ProvisioningResources-sls",
+            "AttributeDefinitions": [
+              {
+                "AttributeName": "MacAddress",
+                "AttributeType": "S"
+              },
+              {
+                "AttributeName": "Sku",
+                "AttributeType": "S"
+              }
+            ],
+            "KeySchema": [
+              {
+                "AttributeName": "MacAddress",
+                "KeyType": "HASH"
+              }
+            ],
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 1,
+              "WriteCapacityUnits": 1
+            }
+          }
+        }
+      },
+      "Outputs": {}
+    },
+    "configValidationMode": "error",
+    "serviceFilename": "serverless.yml",
+    "initialServerlessConfig": {
+      "service": {
+        "$ref": "$[\"service\"][\"serviceObject\"]"
+      },
+      "configValidationMode": "error",
+      "variablesResolutionMode": "20210326",
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "custom": {
+        "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
+      }
+    },
+    "layers": {},
+    "isDashboardMonitoringPreconfigured": false
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/test-infra/cp/1636402358152-2021-11-08T20:12:38.152Z",
+    "artifact": ""
+  }
+}
