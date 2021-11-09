@@ -33,8 +33,25 @@
                 "dynamodb:GetItem"
               ],
               "Resource": [
-                "arn:aws:dynamodb:us-east-1:340456311184:table/ProvisioningResourcesServerless",
-                "arn:aws:dynamodb:us-east-1:340456311184:table/ProvisioningResourcesServerless/index/*"
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      "arn",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      "dynamodb",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      "table/ProvisioningResourcesServerless"
+                    ]
+                  ]
+                }
               ]
             }
           ]
@@ -152,7 +169,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "amanda-test-bucket",
-                "S3Key": "serverless/test-code/cp/1636483843441-2021-11-09T18:50:43.441Z/test-code.zip"
+                "S3Key": "serverless/test-code/cp/1636485306153-2021-11-09T19:15:06.153Z/test-code.zip"
               },
               "Handler": "handler.getSKU",
               "Runtime": "nodejs14.x",
@@ -230,7 +247,18 @@
                 ]
               },
               "ManagedPolicyArns": [
-                "arn:aws:iam::aws:policy/service-role/AWSIoTThingsRegistration"
+                {
+                  "Fn::Join": [
+                    ":",
+                    [
+                      "arn",
+                      "aws",
+                      "iam:",
+                      "aws",
+                      "policy/service-role/AWSIoTThingsRegistration"
+                    ]
+                  ]
+                }
               ]
             }
           }
@@ -367,7 +395,18 @@
               ]
             },
             "ManagedPolicyArns": [
-              "arn:aws:iam::aws:policy/service-role/AWSIoTThingsRegistration"
+              {
+                "Fn::Join": [
+                  ":",
+                  [
+                    "arn",
+                    "aws",
+                    "iam:",
+                    "aws",
+                    "policy/service-role/AWSIoTThingsRegistration"
+                  ]
+                ]
+              }
             ]
           }
         }
@@ -400,7 +439,7 @@
     "artifact": "C:\\Users\\amalaric\\dummy\\code\\.serverless\\test-code.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/test-code/cp/1636483843441-2021-11-09T18:50:43.441Z",
+    "artifactDirectoryName": "serverless/test-code/cp/1636485306153-2021-11-09T19:15:06.153Z",
     "artifact": "test-code.zip"
   }
 }

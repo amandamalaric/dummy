@@ -9,4 +9,4 @@ ioTProvisionByClaimRole:
             Service: iot.amazonaws.com
           Action: 'sts:AssumeRole'
     ManagedPolicyArns:
-      - 'arn:aws:iam::aws:policy/service-role/AWSIoTThingsRegistration'
+      - Fn::Join: [ ":", [ "arn", 'aws', "iam:", 'aws', "policy/service-role/AWSIoTThingsRegistration" ] ]
