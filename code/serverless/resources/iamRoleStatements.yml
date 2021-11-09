@@ -1,15 +1,12 @@
-provider:
-  iam:
-    role:
-      name: dynamoDB
-      path: /custom-role-path/
-      statements:
-        - Effect: 'Allow'
-          Resource: '*'
-          Action: 'iam:DeleteUser'
-      managedPolicies:
-        - 'arn:aws:iam::123456789012:user/*'
-      permissionsBoundary: arn:aws:iam::123456789012:policy/boundaries
-      tags:
-        key: value
-    deploymentRole: arn:aws:iam::123456789012:role/deploy-role
+- Effect: "Allow"
+  Action:
+    - "xray:PutTraceSegments"
+    - "xray:PutTelemetryRecords"
+  Resource: "*"
+
+- Effect: "Allow"
+  Action:
+    - "dynamodb:GetItem"
+  Resource:
+    - "arn:aws:dynamodb:us-east-1:340456311184:table/ProvisioningResourcesServerless"
+    - "arn:aws:dynamodb:us-east-1:340456311184:table/ProvisioningResourcesServerless/index/*"

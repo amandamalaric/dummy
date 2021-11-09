@@ -16,6 +16,30 @@
       "versionFunctions": false,
       "logRetentionInDays": 3,
       "deploymentBucket": "amanda-test-bucket",
+      "iam": {
+        "role": {
+          "statements": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:GetItem"
+              ],
+              "Resource": [
+                "arn:aws:dynamodb:us-east-1:340456311184:table/ProvisioningResourcesServerless",
+                "arn:aws:dynamodb:us-east-1:340456311184:table/ProvisioningResourcesServerless/index/*"
+              ]
+            }
+          ]
+        }
+      },
       "environment": {
         "STAGE": "cp",
         "REGION": "us-east-1",
@@ -23,7 +47,8 @@
           "Ref": "AWS::AccountId"
         },
         "SANITIZE_LOGS": "true",
-        "LOG_LEVEL": "TRACE"
+        "LOG_LEVEL": "TRACE",
+        "PROVISIONING_TABLE": "ProvisioningResourcesServerless"
       },
       "deploymentBucketObject": {
         "name": "amanda-test-bucket"
@@ -95,6 +120,12 @@
                             "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/test-code-cp*:*:*"
                           }
                         ]
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iam\"][\"role\"][\"statements\"][0]"
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iam\"][\"role\"][\"statements\"][1]"
                       }
                     ]
                   }
@@ -121,7 +152,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "amanda-test-bucket",
-                "S3Key": "serverless/test-code/cp/1636475610898-2021-11-09T16:33:30.898Z/test-code.zip"
+                "S3Key": "serverless/test-code/cp/1636483843441-2021-11-09T18:50:43.441Z/test-code.zip"
               },
               "Handler": "handler.getSKU",
               "Runtime": "nodejs14.x",
@@ -136,7 +167,8 @@
                     "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"ACCOUNT_ID\"]"
                   },
                   "SANITIZE_LOGS": "true",
-                  "LOG_LEVEL": "TRACE"
+                  "LOG_LEVEL": "TRACE",
+                  "PROVISIONING_TABLE": "ProvisioningResourcesServerless"
                 }
               },
               "Role": {
@@ -365,10 +397,10 @@
     },
     "layers": {},
     "isDashboardMonitoringPreconfigured": false,
-    "artifact": "C:\\Users\\jcraffey\\source\\dummy\\code\\.serverless\\test-code.zip"
+    "artifact": "C:\\Users\\amalaric\\dummy\\code\\.serverless\\test-code.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/test-code/cp/1636475610898-2021-11-09T16:33:30.898Z",
+    "artifactDirectoryName": "serverless/test-code/cp/1636483843441-2021-11-09T18:50:43.441Z",
     "artifact": "test-code.zip"
   }
 }

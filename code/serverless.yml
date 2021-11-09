@@ -13,6 +13,9 @@ provider:
   logRetentionInDays: ${self:custom.logRetention}
   deploymentBucket:
     name: amanda-test-bucket
+  iam:
+    role:
+      statements: ${file(serverless/resources/iamRoleStatements.yml)}
   environment: ${file(serverless/config/environment.yml)}
 custom: ${file(serverless/config/custom_${self:provider.stage}.yml)}
 functions: ${file(serverless/resources/lambdas.yml)}

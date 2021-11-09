@@ -1,23 +1,24 @@
 /* LIBRARIES */
-const aws = require("aws-sdk");
+const aws = require( "aws-sdk" );
 const dynamo = new aws.DynamoDB({ region: "us-east-1" });
 
-async function lookupSKU(macAddress, dynamoDB = null) {
-  var params = {
+async function lookupSKU( macAddress, dynamoDB = null ) {
+  const params = {
     "TableName": "ProvisioningResourcesServerless",
     "Key": {
       "MacAddress": { "S": macAddress },
     },
   };
 
-  const response = await dynamo.getItem(params).promise();
+  const response = await dynamo.getItem( params ).promise();
   return response.Item.SKU;
 }
 
-async function getSKU(event) {
-  console.log("Processing Request");
+async function getSKU( event ) {
+  console.log( 'getSKU() called with event: ', event );
+
   const macAddress = event.MacAddress ? event.MacAddress : null;
-  const sku = await lookupSKU(macAddress);
+  const sku = await lookupSKU( macAddress );
 
   return {
     allowProvisioning: true,

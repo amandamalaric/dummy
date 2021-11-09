@@ -65,6 +65,24 @@
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/test-code-cp*:*:*"
                     }
                   ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "xray:PutTraceSegments",
+                    "xray:PutTelemetryRecords"
+                  ],
+                  "Resource": "*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem"
+                  ],
+                  "Resource": [
+                    "arn:aws:dynamodb:us-east-1:340456311184:table/ProvisioningResourcesServerless",
+                    "arn:aws:dynamodb:us-east-1:340456311184:table/ProvisioningResourcesServerless/index/*"
+                  ]
                 }
               ]
             }
@@ -91,7 +109,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "amanda-test-bucket",
-          "S3Key": "serverless/test-code/cp/1636475610898-2021-11-09T16:33:30.898Z/test-code.zip"
+          "S3Key": "serverless/test-code/cp/1636483843441-2021-11-09T18:50:43.441Z/test-code.zip"
         },
         "Handler": "handler.getSKU",
         "Runtime": "nodejs14.x",
@@ -106,7 +124,8 @@
               "Ref": "AWS::AccountId"
             },
             "SANITIZE_LOGS": "true",
-            "LOG_LEVEL": "TRACE"
+            "LOG_LEVEL": "TRACE",
+            "PROVISIONING_TABLE": "ProvisioningResourcesServerless"
           }
         },
         "Role": {
