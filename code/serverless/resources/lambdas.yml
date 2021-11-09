@@ -2,5 +2,5 @@ testFleet:
     handler: handler.getSKU
     events:
       - iotFleetProvisioning:
-          templateBody: ${file(template.json)}
-          provisioningRoleArn: arn:aws:iam::340456311184:role/IoTProvisionByClaimRole-TEST
+        templateBody: ${file(template.json)}
+        provisioningRoleArn: !Sub 'arn:aws:iam::${AWS::AccountId}:role/IoTProvisionByClaimRole-TEST'

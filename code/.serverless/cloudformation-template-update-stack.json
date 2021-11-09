@@ -126,7 +126,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "amanda-test-bucket",
-          "S3Key": "serverless/test-code/cp/1636485306153-2021-11-09T19:15:06.153Z/test-code.zip"
+          "S3Key": "serverless/test-code/cp/1636486029816-2021-11-09T19:27:09.816Z/test-code.zip"
         },
         "Handler": "handler.getSKU",
         "Runtime": "nodejs14.x",
@@ -168,7 +168,9 @@
             ]
           }
         },
-        "ProvisioningRoleArn": "arn:aws:iam::340456311184:role/IoTProvisionByClaimRole-TEST",
+        "ProvisioningRoleArn": {
+          "Fn::Sub": "arn:aws:iam::${AWS::AccountId}:role/IoTProvisionByClaimRole-TEST"
+        },
         "TemplateBody": "{\"Parameters\":{\"SKU\":{\"Type\":\"String\"},\"region\":{\"Type\":\"String\"},\"client\":{\"Type\":\"String\"},\"city\":{\"Type\":\"String\"},\"AWS::IoT::Certificate::Id\":{\"Type\":\"String\"},\"MACAddress\":{\"Type\":\"String\"}},\"Resources\":{\"certificate\":{\"Properties\":{\"CertificateId\":{\"Ref\":\"AWS::IoT::Certificate::Id\"},\"Status\":\"Active\"},\"Type\":\"AWS::IoT::Certificate\"},\"policy\":{\"Properties\":{\"PolicyDocument\":\"{\\n  \\\"Version\\\": \\\"2012-10-17\\\",\\n  \\\"Statement\\\": [\\n    {\\n      \\\"Effect\\\": \\\"Allow\\\",\\n      \\\"Action\\\": [\\n        \\\"iot:Connect\\\",\\n        \\\"iot:Receive\\\",\\n        \\\"iot:Publish\\\",\\n        \\\"iot:Subscribe\\\"\\n      ],\\n      \\\"Resource\\\": [\\n        \\\"*\\\"\\n      ]\\n    }\\n  ]\\n}\"},\"Type\":\"AWS::IoT::Policy\"},\"thing\":{\"OverrideSettings\":{\"AttributePayload\":\"MERGE\",\"ThingGroups\":\"DO_NOTHING\",\"ThingTypeName\":\"REPLACE\"},\"Properties\":{\"AttributePayload\":{\"region\":{\"Ref\":\"region\"},\"client\":{\"Ref\":\"client\"},\"city\":{\"Ref\":\"city\"}},\"ThingGroups\":[],\"ThingName\":{\"Fn::Join\":[\"\",[\"ksk_\",{\"Ref\":\"SKU\"}]]}},\"Type\":\"AWS::IoT::Thing\"}}}"
       },
       "DependsOn": [
