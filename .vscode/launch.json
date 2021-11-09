@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "code:handler.getSKU (nodejs14.x)",
+            "invokeTarget": {
+                "target": "code",
+                "projectRoot": "${workspaceFolder}/code",
+                "lambdaHandler": "handler.getSKU"
+            },
+            "lambda": {
+                "runtime": "nodejs14.x",
+                "payload": {"json": {
+                    "MacAddress": "EA1FD0592DEB"
+                }},
+                "environmentVariables": {},
+            }
+        }
+    ]
+}

@@ -19,5 +19,3 @@ functions: ${file(serverless/resources/lambdas.yml)}
 resources:
   - Resources:
       ${file(serverless/resources/iam.yml)}
-plugins:
-  - serverless-webpack

@@ -121,7 +121,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "amanda-test-bucket",
-                "S3Key": "serverless/test-code/cp/1636401148732-2021-11-08T19:52:28.732Z/test-code.zip"
+                "S3Key": "serverless/test-code/cp/1636475610898-2021-11-09T16:33:30.898Z/test-code.zip"
               },
               "Handler": "handler.getSKU",
               "Runtime": "nodejs14.x",
@@ -226,9 +226,6 @@
       "logLevel": "TRACE",
       "logRetention": 3
     },
-    "plugins": [
-      "serverless-webpack"
-    ],
     "pluginsData": {},
     "functions": {
       "testFleet": {
@@ -313,9 +310,7 @@
           }
         ],
         "name": "test-code-cp-testFleet",
-        "package": {
-          "artifact": ".serverless\\test-code.zip"
-        },
+        "package": {},
         "memory": 512,
         "timeout": 6,
         "runtime": "nodejs14.x",
@@ -366,16 +361,14 @@
       },
       "resources": {
         "$ref": "$[\"service\"][\"resources\"]"
-      },
-      "plugins": {
-        "$ref": "$[\"service\"][\"plugins\"]"
       }
     },
     "layers": {},
-    "isDashboardMonitoringPreconfigured": false
+    "isDashboardMonitoringPreconfigured": false,
+    "artifact": "C:\\Users\\jcraffey\\source\\dummy\\code\\.serverless\\test-code.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/test-code/cp/1636401148732-2021-11-08T19:52:28.732Z",
-    "artifact": ""
+    "artifactDirectoryName": "serverless/test-code/cp/1636475610898-2021-11-09T16:33:30.898Z",
+    "artifact": "test-code.zip"
   }
 }
