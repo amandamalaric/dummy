@@ -12,10 +12,7 @@
       "deploymentBucket": "amanda-test-bucket",
       "environment": {
         "STAGE": "cp",
-        "REGION": "us-east-1",
-        "SIMULATIONS_TABLE": "simulations_cp",
-        "SIMULATIONS_TABLE_USER_ID_INDEX": "simulations_user_id_index_cp",
-        "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+        "REGION": "us-east-1"
       },
       "versionFunctions": true,
       "deploymentBucketObject": {
@@ -28,14 +25,11 @@
           "ProvisioningResourcesServerless": {
             "Type": "AWS::DynamoDB::Table",
             "Properties": {
-              "TableName": "ProvisioningResources-sls",
+              "TableName": "ProvisioningResourcesServerless",
+              "BillingMode": "PAY_PER_REQUEST",
               "AttributeDefinitions": [
                 {
                   "AttributeName": "MacAddress",
-                  "AttributeType": "S"
-                },
-                {
-                  "AttributeName": "Sku",
                   "AttributeType": "S"
                 }
               ],
@@ -44,11 +38,7 @@
                   "AttributeName": "MacAddress",
                   "KeyType": "HASH"
                 }
-              ],
-              "ProvisionedThroughput": {
-                "ReadCapacityUnits": 1,
-                "WriteCapacityUnits": 1
-              }
+              ]
             }
           }
         },
@@ -81,14 +71,11 @@
         "ProvisioningResourcesServerless": {
           "Type": "AWS::DynamoDB::Table",
           "Properties": {
-            "TableName": "ProvisioningResources-sls",
+            "TableName": "ProvisioningResourcesServerless",
+            "BillingMode": "PAY_PER_REQUEST",
             "AttributeDefinitions": [
               {
                 "AttributeName": "MacAddress",
-                "AttributeType": "S"
-              },
-              {
-                "AttributeName": "Sku",
                 "AttributeType": "S"
               }
             ],
@@ -97,11 +84,7 @@
                 "AttributeName": "MacAddress",
                 "KeyType": "HASH"
               }
-            ],
-            "ProvisionedThroughput": {
-              "ReadCapacityUnits": 1,
-              "WriteCapacityUnits": 1
-            }
+            ]
           }
         }
       },
@@ -129,7 +112,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/test-infra/cp/1636402358152-2021-11-08T20:12:38.152Z",
+    "artifactDirectoryName": "serverless/test-infra/cp/1636416401803-2021-11-09T00:06:41.803Z",
     "artifact": ""
   }
 }

@@ -5,14 +5,11 @@
     "ProvisioningResourcesServerless": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
-        "TableName": "ProvisioningResources-sls",
+        "TableName": "ProvisioningResourcesServerless",
+        "BillingMode": "PAY_PER_REQUEST",
         "AttributeDefinitions": [
           {
             "AttributeName": "MacAddress",
-            "AttributeType": "S"
-          },
-          {
-            "AttributeName": "Sku",
             "AttributeType": "S"
           }
         ],
@@ -21,11 +18,7 @@
             "AttributeName": "MacAddress",
             "KeyType": "HASH"
           }
-        ],
-        "ProvisionedThroughput": {
-          "ReadCapacityUnits": 1,
-          "WriteCapacityUnits": 1
-        }
+        ]
       }
     }
   },
