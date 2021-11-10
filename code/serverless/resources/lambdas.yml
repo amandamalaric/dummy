@@ -3,4 +3,4 @@ testFleet:
     events:
       - iotFleetProvisioning:
         templateBody: ${file(template.json)}
-        provisioningRoleArn: !Sub 'arn:aws:iam::${AWS::AccountId}:role/IoTProvisionByClaimRole-TEST'
+        provisioningRoleArn: !Sub 'arn:aws:iam::${AWS::AccountId}:role/IoTProvisionByClaimRole'

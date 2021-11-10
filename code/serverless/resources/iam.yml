@@ -1,7 +1,7 @@
 ioTProvisionByClaimRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: IoTProvisionByClaimRole-TEST
+    RoleName: IoTProvisionByClaimRole
     AssumeRolePolicyDocument:
       Statement:
         - Effect: Allow

@@ -1,0 +1,9 @@
+webpack:
+  packager: 'yarn'
+  includeModules:
+    forceExclude:
+      - aws-sdk
+
+# Log Tuning
+logLevel: 'TRACE'
+logRetention: 3

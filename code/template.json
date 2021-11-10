@@ -1,9 +1,12 @@
 {
   "Parameters": {
-    "SKU": {
+    "sku": {
       "Type": "String"
     },
     "region": {
+      "Type": "String"
+    },
+    "env": {
       "Type": "String"
     },
     "client": {
@@ -15,7 +18,10 @@
     "AWS::IoT::Certificate::Id": {
       "Type": "String"
     },
-    "MACAddress": {
+    "macAddress": {
+      "Type": "String"
+    },
+    "thingTypeName": {
       "Type": "String"
     }
   },
@@ -31,11 +37,12 @@
     },
     "policy": {
       "Properties": {
-        "PolicyDocument": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iot:Connect\",\n        \"iot:Receive\",\n        \"iot:Publish\",\n        \"iot:Subscribe\"\n      ],\n      \"Resource\": [\n        \"*\"\n      ]\n    }\n  ]\n}"
+        "PolicyName": "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"iot:Connect\"], \"Resource\": [\"arn:aws:iot:ca-central-1:340456311184:client/${iot:Connection.Thing.ThingName}\"]}, {\"Effect\": \"Allow\", \"Action\": [\"iot:Publish\", \"iot:Receive\"], \"Resource\": [\"arn:aws:iot:ca-central-1:340456311184:topic/${iot:Connection.Thing.Attributes[env]}/${iot:Connection.Thing.ThingTypeName}/${iot:Connection.Thing.Attributes[client]}/${iot:Connection.Thing.Attributes[city]}/${iot:Connection.Thing.ThingName}/*\", \"arn:aws:iot:ca-central-1:340456311184:topic/$aws/things/${iot:Connection.Thing.ThingName}/*\"]}, {\"Effect\": \"Allow\", \"Action\": [\"iot:Subscribe\"], \"Resource\": [\"arn:aws:iot:ca-central-1:340456311184:topicfilter/${iot:Connection.Thing.Attributes[env]}/${iot:Connection.Thing.ThingTypeName}/${iot:Connection.Thing.Attributes[client]}/${iot:Connection.Thing.Attributes[city]}/${iot:Connection.Thing.ThingName}/*\", \"arn:aws:iot:ca-central-1:340456311184:topicfilter/$aws/things/${iot:Connection.Thing.ThingName}/*\"]}]}"
       },
       "Type": "AWS::IoT::Policy"
     },
     "thing": {
+      "Type": "AWS::IoT::Thing",
       "OverrideSettings": {
         "AttributePayload": "MERGE",
         "ThingGroups": "DO_NOTHING",
@@ -43,6 +50,9 @@
       },
       "Properties": {
         "AttributePayload": {
+          "sku": {
+            "Ref": "sku"
+          },
           "region": {
             "Ref": "region"
           },
@@ -51,6 +61,12 @@
           },
           "city": {
             "Ref": "city"
+          },
+          "macAddress": {
+            "Ref": "macAddress"
+          },
+          "env": {
+            "Ref": "env"
           }
         },
         "ThingGroups": [],
@@ -60,13 +76,15 @@
             [
               "ksk_",
               {
-                "Ref": "SKU"
+                "Ref": "macAddress"
               }
             ]
           ]
+        },
+        "ThingTypeName": {
+          "Ref": "thingTypeName"
         }
-      },
-      "Type": "AWS::IoT::Thing"
+      }
     }
   }
 }

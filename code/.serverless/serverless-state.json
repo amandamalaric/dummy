@@ -8,7 +8,7 @@
       "name": "aws",
       "runtime": "nodejs14.x",
       "memorySize": 512,
-      "stage": "cp",
+      "stage": "ajm",
       "region": "us-east-1",
       "tracing": {
         "lambda": false
@@ -58,7 +58,7 @@
         }
       },
       "environment": {
-        "STAGE": "cp",
+        "STAGE": "ajm",
         "REGION": "us-east-1",
         "ACCOUNT_ID": {
           "Ref": "AWS::AccountId"
@@ -77,7 +77,7 @@
           "TestFleetLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/test-code-cp-testFleet",
+              "LogGroupName": "/aws/lambda/test-code-ajm-testFleet",
               "RetentionInDays": 3
             }
           },
@@ -107,7 +107,7 @@
                       "-",
                       [
                         "test-code",
-                        "cp",
+                        "ajm",
                         "lambda"
                       ]
                     ]
@@ -123,7 +123,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/test-code-cp*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/test-code-ajm*:*"
                           }
                         ]
                       },
@@ -134,7 +134,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/test-code-cp*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/test-code-ajm*:*:*"
                           }
                         ]
                       },
@@ -154,7 +154,7 @@
                   "-",
                   [
                     "test-code",
-                    "cp",
+                    "ajm",
                     {
                       "Ref": "AWS::Region"
                     },
@@ -169,16 +169,16 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "amanda-test-bucket",
-                "S3Key": "serverless/test-code/cp/1636486029816-2021-11-09T19:27:09.816Z/test-code.zip"
+                "S3Key": "serverless/test-code/ajm/1636563923220-2021-11-10T17:05:23.220Z/test-code.zip"
               },
               "Handler": "handler.getSKU",
               "Runtime": "nodejs14.x",
-              "FunctionName": "test-code-cp-testFleet",
+              "FunctionName": "test-code-ajm-testFleet",
               "MemorySize": 512,
               "Timeout": 6,
               "Environment": {
                 "Variables": {
-                  "STAGE": "cp",
+                  "STAGE": "ajm",
                   "REGION": "us-east-1",
                   "ACCOUNT_ID": {
                     "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"ACCOUNT_ID\"]"
@@ -199,44 +199,10 @@
               "TestFleetLogGroup"
             ]
           },
-          "TestFleetIotProvisioningTemplate": {
-            "Type": "AWS::IoT::ProvisioningTemplate",
-            "Properties": {
-              "Enabled": true,
-              "PreProvisioningHook": {
-                "TargetArn": {
-                  "Fn::GetAtt": [
-                    "TestFleetLambdaFunction",
-                    "Arn"
-                  ]
-                }
-              },
-              "ProvisioningRoleArn": {
-                "Fn::Sub": "arn:aws:iam::${AWS::AccountId}:role/IoTProvisionByClaimRole-TEST"
-              },
-              "TemplateBody": "{\"Parameters\":{\"SKU\":{\"Type\":\"String\"},\"region\":{\"Type\":\"String\"},\"client\":{\"Type\":\"String\"},\"city\":{\"Type\":\"String\"},\"AWS::IoT::Certificate::Id\":{\"Type\":\"String\"},\"MACAddress\":{\"Type\":\"String\"}},\"Resources\":{\"certificate\":{\"Properties\":{\"CertificateId\":{\"Ref\":\"AWS::IoT::Certificate::Id\"},\"Status\":\"Active\"},\"Type\":\"AWS::IoT::Certificate\"},\"policy\":{\"Properties\":{\"PolicyDocument\":\"{\\n  \\\"Version\\\": \\\"2012-10-17\\\",\\n  \\\"Statement\\\": [\\n    {\\n      \\\"Effect\\\": \\\"Allow\\\",\\n      \\\"Action\\\": [\\n        \\\"iot:Connect\\\",\\n        \\\"iot:Receive\\\",\\n        \\\"iot:Publish\\\",\\n        \\\"iot:Subscribe\\\"\\n      ],\\n      \\\"Resource\\\": [\\n        \\\"*\\\"\\n      ]\\n    }\\n  ]\\n}\"},\"Type\":\"AWS::IoT::Policy\"},\"thing\":{\"OverrideSettings\":{\"AttributePayload\":\"MERGE\",\"ThingGroups\":\"DO_NOTHING\",\"ThingTypeName\":\"REPLACE\"},\"Properties\":{\"AttributePayload\":{\"region\":{\"Ref\":\"region\"},\"client\":{\"Ref\":\"client\"},\"city\":{\"Ref\":\"city\"}},\"ThingGroups\":[],\"ThingName\":{\"Fn::Join\":[\"\",[\"ksk_\",{\"Ref\":\"SKU\"}]]}},\"Type\":\"AWS::IoT::Thing\"}}}"
-            },
-            "DependsOn": [
-              "TestFleetLambdaPermissionIotProvisioningTemplate"
-            ]
-          },
-          "TestFleetLambdaPermissionIotProvisioningTemplate": {
-            "Type": "AWS::Lambda::Permission",
-            "Properties": {
-              "FunctionName": {
-                "Fn::GetAtt": [
-                  "TestFleetLambdaFunction",
-                  "Arn"
-                ]
-              },
-              "Action": "lambda:InvokeFunction",
-              "Principal": "iot.amazonaws.com"
-            }
-          },
           "ioTProvisionByClaimRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
-              "RoleName": "IoTProvisionByClaimRole-TEST",
+              "RoleName": "IoTProvisionByClaimRole-AJM",
               "AssumeRolePolicyDocument": {
                 "Statement": [
                   {
@@ -263,13 +229,144 @@
                 }
               ]
             }
+          },
+          "provisionByClaimPolicyAJM": {
+            "Type": "AWS::IoT::Policy",
+            "Properties": {
+              "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "iot:Connect"
+                    ],
+                    "Resource": [
+                      {
+                        "Fn::Join": [
+                          ":",
+                          [
+                            "arn",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            "iot",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            "client/iot:Connection.Thing.ThingName"
+                          ]
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "iot:Publish",
+                      "iot:Receive"
+                    ],
+                    "Resource": [
+                      {
+                        "Fn::Join": [
+                          ":",
+                          [
+                            "arn",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            "iot",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            "topic/ajm/iot:Connection.Thing.ThingTypeName/iot:Connection.Thing.Attributes[client]}/iot:Connection.Thing.Attributes[city]/iot:Connection.Thing.ThingName/*"
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          ":",
+                          [
+                            "arn",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            "iot",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            "topic/$aws/things/iot:Connection.Thing.ThingName/*"
+                          ]
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "iot:Subscribe"
+                    ],
+                    "Resource": [
+                      {
+                        "Fn::Join": [
+                          ":",
+                          [
+                            "arn",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            "iot",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            "topicfilter/ajm/iot:Connection.Thing.ThingTypeName/iot:Connection.Thing.Attributes[client]/iot:Connection.Thing.Attributes[city]/iot:Connection.Thing.ThingName/*"
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          ":",
+                          [
+                            "arn",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            "iot",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            "topicfilter/$aws/things/iot:Connection.Thing.ThingName/*"
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "PolicyName": "ProvisionByClaimPolicyAJM"
+            }
           }
         },
         "Outputs": {
           "ServerlessDeploymentBucketName": {
             "Value": "amanda-test-bucket",
             "Export": {
-              "Name": "sls-test-code-cp-ServerlessDeploymentBucketName"
+              "Name": "sls-test-code-ajm-ServerlessDeploymentBucketName"
             }
           }
         }
@@ -288,93 +385,115 @@
       "logLevel": "TRACE",
       "logRetention": 3
     },
+    "plugins": [
+      "serverless-webpack"
+    ],
     "pluginsData": {},
     "functions": {
       "testFleet": {
         "handler": "handler.getSKU",
         "events": [
           {
-            "iotFleetProvisioning": {
-              "templateBody": {
-                "Parameters": {
-                  "SKU": {
-                    "Type": "String"
-                  },
-                  "region": {
-                    "Type": "String"
-                  },
-                  "client": {
-                    "Type": "String"
-                  },
-                  "city": {
-                    "Type": "String"
-                  },
-                  "AWS::IoT::Certificate::Id": {
-                    "Type": "String"
-                  },
-                  "MACAddress": {
-                    "Type": "String"
-                  }
+            "templateBody": {
+              "Parameters": {
+                "sku": {
+                  "Type": "String"
                 },
-                "Resources": {
-                  "certificate": {
-                    "Properties": {
-                      "CertificateId": {
-                        "Ref": "AWS::IoT::Certificate::Id"
-                      },
-                      "Status": "Active"
-                    },
-                    "Type": "AWS::IoT::Certificate"
-                  },
-                  "policy": {
-                    "Properties": {
-                      "PolicyDocument": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"iot:Connect\",\n        \"iot:Receive\",\n        \"iot:Publish\",\n        \"iot:Subscribe\"\n      ],\n      \"Resource\": [\n        \"*\"\n      ]\n    }\n  ]\n}"
-                    },
-                    "Type": "AWS::IoT::Policy"
-                  },
-                  "thing": {
-                    "OverrideSettings": {
-                      "AttributePayload": "MERGE",
-                      "ThingGroups": "DO_NOTHING",
-                      "ThingTypeName": "REPLACE"
-                    },
-                    "Properties": {
-                      "AttributePayload": {
-                        "region": {
-                          "Ref": "region"
-                        },
-                        "client": {
-                          "Ref": "client"
-                        },
-                        "city": {
-                          "Ref": "city"
-                        }
-                      },
-                      "ThingGroups": [],
-                      "ThingName": {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "ksk_",
-                            {
-                              "Ref": "SKU"
-                            }
-                          ]
-                        ]
-                      }
-                    },
-                    "Type": "AWS::IoT::Thing"
-                  }
+                "region": {
+                  "Type": "String"
+                },
+                "env": {
+                  "Type": "String"
+                },
+                "client": {
+                  "Type": "String"
+                },
+                "city": {
+                  "Type": "String"
+                },
+                "AWS::IoT::Certificate::Id": {
+                  "Type": "String"
+                },
+                "macAddress": {
+                  "Type": "String"
+                },
+                "thingTypeName": {
+                  "Type": "String"
                 }
               },
-              "provisioningRoleArn": {
-                "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"TestFleetIotProvisioningTemplate\"][\"Properties\"][\"ProvisioningRoleArn\"]"
+              "Resources": {
+                "certificate": {
+                  "Properties": {
+                    "CertificateId": {
+                      "Ref": "AWS::IoT::Certificate::Id"
+                    },
+                    "Status": "Active"
+                  },
+                  "Type": "AWS::IoT::Certificate"
+                },
+                "policy": {
+                  "Properties": {
+                    "PolicyName": "ProvisionByClaimPolicyAJM"
+                  },
+                  "Type": "AWS::IoT::Policy"
+                },
+                "thing": {
+                  "Type": "AWS::IoT::Thing",
+                  "OverrideSettings": {
+                    "AttributePayload": "MERGE",
+                    "ThingGroups": "DO_NOTHING",
+                    "ThingTypeName": "REPLACE"
+                  },
+                  "Properties": {
+                    "AttributePayload": {
+                      "sku": {
+                        "Ref": "sku"
+                      },
+                      "region": {
+                        "Ref": "region"
+                      },
+                      "client": {
+                        "Ref": "client"
+                      },
+                      "city": {
+                        "Ref": "city"
+                      },
+                      "macAddress": {
+                        "Ref": "macAddress"
+                      },
+                      "env": {
+                        "Ref": "env"
+                      }
+                    },
+                    "ThingGroups": [],
+                    "ThingName": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "ksk_",
+                          {
+                            "Ref": "macAddress"
+                          }
+                        ]
+                      ]
+                    },
+                    "ThingTypeName": {
+                      "Ref": "thingTypeName"
+                    }
+                  }
+                }
               }
-            }
+            },
+            "provisioningRoleArn": {
+              "Fn::Sub": "arn:aws:iam::${AWS::AccountId}:role/IoTProvisionByClaimRole-AJM"
+            },
+            "iotFleetProvisioning": null
           }
         ],
-        "name": "test-code-cp-testFleet",
-        "package": {},
+        "name": "test-code-ajm-testFleet",
+        "package": {
+          "artifact": ".serverless\\test-code.zip"
+        },
         "memory": 512,
         "timeout": 6,
         "runtime": "nodejs14.x",
@@ -386,7 +505,7 @@
         "ioTProvisionByClaimRole": {
           "Type": "AWS::IAM::Role",
           "Properties": {
-            "RoleName": "IoTProvisionByClaimRole-TEST",
+            "RoleName": "IoTProvisionByClaimRole-AJM",
             "AssumeRolePolicyDocument": {
               "Statement": [
                 {
@@ -413,6 +532,137 @@
               }
             ]
           }
+        },
+        "provisionByClaimPolicyAJM": {
+          "Type": "AWS::IoT::Policy",
+          "Properties": {
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "iot:Connect"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          "iot",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          "client/iot:Connection.Thing.ThingName"
+                        ]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "iot:Publish",
+                    "iot:Receive"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          "iot",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          "topic/ajm/iot:Connection.Thing.ThingTypeName/iot:Connection.Thing.Attributes[client]}/iot:Connection.Thing.Attributes[city]/iot:Connection.Thing.ThingName/*"
+                        ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          "iot",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          "topic/$aws/things/iot:Connection.Thing.ThingName/*"
+                        ]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "iot:Subscribe"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          "iot",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          "topicfilter/ajm/iot:Connection.Thing.ThingTypeName/iot:Connection.Thing.Attributes[client]/iot:Connection.Thing.Attributes[city]/iot:Connection.Thing.ThingName/*"
+                        ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          "iot",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          "topicfilter/$aws/things/iot:Connection.Thing.ThingName/*"
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "PolicyName": "ProvisionByClaimPolicyAJM"
+          }
         }
       },
       "Outputs": {}
@@ -436,14 +686,16 @@
       },
       "resources": {
         "$ref": "$[\"service\"][\"resources\"]"
+      },
+      "plugins": {
+        "$ref": "$[\"service\"][\"plugins\"]"
       }
     },
     "layers": {},
-    "isDashboardMonitoringPreconfigured": false,
-    "artifact": "C:\\Users\\amalaric\\dummy\\code\\.serverless\\test-code.zip"
+    "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/test-code/cp/1636486029816-2021-11-09T19:27:09.816Z",
-    "artifact": "test-code.zip"
+    "artifactDirectoryName": "serverless/test-code/ajm/1636563923220-2021-11-10T17:05:23.220Z",
+    "artifact": ""
   }
 }
